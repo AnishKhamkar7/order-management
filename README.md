@@ -217,7 +217,6 @@ npx prisma studio
 
 ---
 
-
 ## 📄 License
 
 MIT License
