@@ -11,7 +11,7 @@ import api from "@/lib/axios";
 import { toast } from "sonner";
 import { AvailableOrderCard } from "@/components/AvailableOrderCard";
 import { useAuth } from "@/context/auth-context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type OrderStatus =
   | "PENDING"
@@ -96,9 +96,19 @@ export default function AvailableOrdersPage() {
   const queryClient = useQueryClient();
   const { isConnected, joinOrderRoom } = useWebSocket();
   const { user } = useAuth();
-
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+
+  const { data: activeOrder } = useQuery({
+    queryKey: ["activeDelivery"],
+    queryFn: () =>
+      api
+        .get("/orders/delivery-partner/active", {
+          params: { city: user?.deliveryPartner?.city },
+        })
+        .then((r) => r.data),
+    staleTime: 30 * 1000,
+  });
 
   const city = user?.deliveryPartner?.city;
 
@@ -160,6 +170,26 @@ export default function AvailableOrdersPage() {
     toast.info("Refreshing orders...");
   };
 
+  if (activeOrder) {
+    return (
+      <div className="container mx-auto p-4 lg:p-6">
+        <Card>
+          <CardContent className="text-center py-12 space-y-4">
+            <Truck className="mx-auto h-12 w-12 text-orange-500" />
+            <h2 className="text-xl font-semibold">
+              You have an active delivery
+            </h2>
+            <p className="text-muted-foreground">
+              Complete your current order before accepting a new one.
+            </p>
+            <Link to="/delivery/dashboard">
+              <Button>Go to Active Delivery</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto p-4 lg:p-6 space-y-6">
       {/* Header */}
