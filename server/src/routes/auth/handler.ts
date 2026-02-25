@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "./service";
 import { UserRole } from "@prisma/client";
-import tr from "zod/v4/locales/tr.js";
 
 export class AuthHandler {
   private authService: AuthService;
