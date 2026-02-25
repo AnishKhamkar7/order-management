@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "./service";
 import { UserRole } from "@prisma/client";
+import tr from "zod/v4/locales/tr.js";
 
 export class AuthHandler {
   private authService: AuthService;
@@ -48,8 +49,8 @@ export class AuthHandler {
 
       res.cookie("token", result.token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
@@ -85,8 +86,8 @@ export class AuthHandler {
 
       res.cookie("token", result.token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
