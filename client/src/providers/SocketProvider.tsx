@@ -164,9 +164,9 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
     if (!isAuthReady) return;
 
     const serverUrl =
-      env.MODE === "development" && env.VITE_API_BASE_URL
-        ? env.VITE_API_BASE_URL.replace("/api", "")
-        : "/";
+      env.MODE === "development"
+        ? env.VITE_API_BASE_URL?.replace("/api", "")
+        : env.VITE_API_BASE_URL;
 
     const newSocket = io(serverUrl, {
       withCredentials: true,

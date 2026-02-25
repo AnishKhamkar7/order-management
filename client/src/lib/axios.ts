@@ -2,13 +2,15 @@ import axios from "axios";
 import { env } from "@/env";
 
 const api = axios.create({
-  baseURL: env.MODE === "development" ? env.VITE_API_BASE_URL : "/api",
+  baseURL:
+    env.MODE === "development"
+      ? env.VITE_API_BASE_URL
+      : `${env.VITE_API_BASE_URL}/api`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
-
 api.interceptors.response.use(
   (response) => response,
   (error) => {
